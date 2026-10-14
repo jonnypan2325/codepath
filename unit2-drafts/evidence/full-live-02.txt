@@ -1,0 +1,42 @@
+## Repro-check grading — issue #60 (full package: claim.md + repro.md)
+
+**Scope check:** Issue lives in `codepath/pathreview-ai301-fa26-s3`, the scoped repo — in scope. Claim is posted at the given URL; repro.md is an unposted draft, so this is graded as a **full package**.
+
+### Per-check evidence
+
+| Check | Grade | Evidence |
+|---|---|---|
+| environment-recorded | pass | repro.md states "macOS 26.6.2 (arm64), Python 3.11.16, structlog 26.1.0, pytest 9.1.1" tested at unchanged commit `2f4e82f5...`; Python 3.11 is within the repo's `requires-python = ">=3.11"` (per Aryankn29's thread comment), and the trigger is pure-Python so no DB/service config is needed — none omitted. |
+| steps-rerunnable | pass | Exact `git clone`/`checkout <commit>`/venv/pinned-version install commands are given, plus the literal one-line trigger snippet from the issue — a stranger can repeat this verbatim. |
+| observable-evidence | pass | Quotes the actual traceback (`TypeError: sequence item 0: expected str instance, NoneType found` at `faithfulness_checker.py:38`) plus a results table with exit codes for every command run — not an unsupported "confirmed" assertion. |
+| target-behavior | pass | Same input (`{'text': None}`), same file/line, same exception text and message as the issue body; the named test's xfail-vs-`--runxfail` distinction is explicitly reported (`21 deselected, 1 xfailed` → `1 failed ... exit 1`), matching evidence-guide's XFAIL handling requirement. |
+| outcome-honest | pass | "Confirmed... after posting my claim" is consistent with timestamps (claim posted 2026-09-30T06:08:35Z = 23:08:35 PDT on 09-29; repro recorded 23:10 PDT same evening — 2 minutes later). Root cause is stated as an established fact only after the controls demonstrate it; explicitly scopes out unrelated xfails (issue #59) and unrun suites (make setup, frontend, lint, typecheck). |
+| claim-specific-and-constructive | pass | Claim names the exact component/input (`FaithfulnessChecker.check()`, `text: None`) and a concrete next action (verify snippet + named test, compare missing-key case, post env/commands/results) — no generic enthusiasm or priority demands. |
+| repository-conventions | pass | CONTRIBUTING.md has no AI-disclosure clause and no comment-specific checklist for existing issues (its checkboxes/templates target PRs) — silence creates no extra disclosure duty, and repro.md discloses anyway ("Codex drafted this report and executed the recorded commands... not a claim that I independently executed or reviewed every command"). Path Review house rule respected: several classmates already claimed/reproduced #60, but jonnypan2325 posted an independent claim and an independently-produced repro from their own fork, not a "same as above" piggyback. |
+
+### Voice-guide notes
+
+- **Lead with behavior/next action:** claim.md opens with the exact crashing call and defers a full biography — matches the guide's "Right" example almost exactly.
+- **Separate plans/observations/hypotheses, attribute AI honestly:** repro.md's disclosure line mirrors the guide's own "Right" example pattern (naming the AI, what it ran, and not overclaiming personal execution/review).
+- **Compact reproducible ticket:** tested revision, exact commands, expected/actual, and relevant traceback are all present without padding.
+- **Report only checks actually run:** repro.md explicitly delimits scope ("make setup, database/migrations, API, frontend/Jest, integration tests, lint and type checks were not run") — follows the guide's "Right" example, avoids the "Tests and lint pass" pitfall.
+- **Explain design only as far as needed:** dev notes stay scoped to the `.get()` default behavior; no manufactured redesign or unnecessary diagrams for what is a plain traceback bug.
+- No "things I never post" violations found (no invented runs, no guaranteed fix/date, no false "graded by repro-check" claim, no piggybacking).
+
+No shortcomings rise to a rubric failure; this package is ready to post as a full reproduction.
+
+```json
+{
+  "item": "https://github.com/codepath/pathreview-ai301-fa26-s3/issues/60",
+  "checks": [
+    {"name": "environment-recorded", "grade": "pass", "evidence": "repro.md states macOS 26.6.2 (arm64), Python 3.11.16, structlog 26.1.0, pytest 9.1.1 at unchanged commit 2f4e82f5..., within the repo's requires-python >=3.11"},
+    {"name": "steps-rerunnable", "grade": "pass", "evidence": "Exact clone/checkout/venv/pip-install commands plus the literal trigger snippet are given verbatim"},
+    {"name": "observable-evidence", "grade": "pass", "evidence": "Quotes actual traceback (TypeError ... faithfulness_checker.py:38) and a results table with exit codes for every command"},
+    {"name": "target-behavior", "grade": "pass", "evidence": "Same input, file/line, and exception text as the issue; --runxfail run shows exit 1 with the same TypeError, matching the claimed target"},
+    {"name": "outcome-honest", "grade": "pass", "evidence": "Confirmation timestamp (23:10 PDT 09-29) is ~2 min after claim post time (23:08:35 PDT 09-29); root cause stated only after controls support it; unrun checks and unrelated xfails explicitly scoped out"},
+    {"name": "claim-specific-and-constructive", "grade": "pass", "evidence": "Claim names FaithfulnessChecker.check() and the text: None trigger, plus a concrete next-step plan, with no generic enthusiasm or priority demands"},
+    {"name": "repository-conventions", "grade": "pass", "evidence": "CONTRIBUTING.md has no AI-disclosure clause or comment-specific checklist; repro.md discloses AI use anyway and the report is the poster's own independently-produced evidence, not a piggyback on classmates' prior claims"}
+  ],
+  "verdict": "accept"
+}
+```

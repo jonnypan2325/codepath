@@ -1,0 +1,151 @@
+Issue #60: local confirmation run (not a paid skill evaluation)
+Recorded with the reproduction helper; see the work log for operator and claim-posting chronology.
+UTC: 2026-09-30T06:10:56.898455+00:00
+Platform: macOS-26.6.2-arm64-arm-64bit
+Python: 3.11.16 (main, Aug 12 2026, 23:03:19) [Clang 21.0.0 (clang-2100.1.1.101)]
+structlog: 26.1.0
+pytest: 9.1.1
+Repo: /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork
+
+## Repository revision
+$ git rev-parse HEAD
+2f4e82f52efbcfcc57d65b3fa5348672163ca088
+Exit status: 0
+
+## Repository working tree
+$ git status --short
+
+Exit status: 0
+
+## Exact issue snippet
+$ /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python -c 'from rag.evaluator.faithfulness_checker import FaithfulnessChecker; FaithfulnessChecker().check('"'"'Knows Python.'"'"', [{'"'"'text'"'"': None}])'
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/rag/evaluator/faithfulness_checker.py", line 38, in check
+    context_text = " ".join([chunk.get("text", "") for chunk in context_chunks])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: sequence item 0: expected str instance, NoneType found
+Exit status: 1
+
+## Missing-key control
+$ /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python -c 'from rag.evaluator.faithfulness_checker import FaithfulnessChecker; print('"'"'score ='"'"', FaithfulnessChecker().check('"'"'Knows Python.'"'"', [{'"'"'content'"'"': '"'"'Python skills'"'"'}]))'
+2026-09-29 23:10:57 [info     ] faithfulness_checked           claims_count=1 score=0.0 supported_count=0
+score = 0.0
+Exit status: 0
+
+## String-text control
+$ /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python -c 'from rag.evaluator.faithfulness_checker import FaithfulnessChecker; print('"'"'score ='"'"', FaithfulnessChecker().check('"'"'Knows Python.'"'"', [{'"'"'text'"'"': '"'"'Python skills'"'"'}]))'
+2026-09-29 23:10:57 [info     ] faithfulness_checked           claims_count=1 score=0.0 supported_count=0
+score = 0.0
+Exit status: 0
+
+## Named issue test, existing XFAIL marker retained
+$ /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python -m pytest tests/unit/test_faithfulness_checker.py -v -m unit -k test_none_context_chunk_text -rx
+============================= test session starts ==============================
+platform darwin -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork
+configfile: pyproject.toml
+collecting ... collected 22 items / 21 deselected / 1 selected
+
+tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text XFAIL [100%]
+
+=========================== short test summary info ============================
+XFAIL tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text - issue #60: faithfulness checker crashes when a context chunk has text: None
+====================== 21 deselected, 1 xfailed in 0.05s =======================
+Exit status: 0
+
+## Named issue test, expose actual failure
+$ /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python -m pytest tests/unit/test_faithfulness_checker.py -v -m unit -k test_none_context_chunk_text --runxfail
+============================= test session starts ==============================
+platform darwin -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork
+configfile: pyproject.toml
+collecting ... collected 22 items / 21 deselected / 1 selected
+
+tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text FAILED [100%]
+
+=================================== FAILURES ===================================
+_____________ TestFaithfulnessChecker.test_none_context_chunk_text _____________
+
+self = <tests.unit.test_faithfulness_checker.TestFaithfulnessChecker object at 0x108d9b5d0>
+checker = <rag.evaluator.faithfulness_checker.FaithfulnessChecker object at 0x108da1f50>
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason="issue #60: faithfulness checker crashes when a context chunk has text: None",
+    )
+    def test_none_context_chunk_text(self, checker):
+        """Test handling of None in context chunk text."""
+        feedback = "Has Python skills"
+        context_chunks = [{"text": None}]
+    
+>       score = checker.check(feedback, context_chunks)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_faithfulness_checker.py:234: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rag.evaluator.faithfulness_checker.FaithfulnessChecker object at 0x108da1f50>
+feedback = 'Has Python skills', context_chunks = [{'text': None}]
+
+    def check(self, feedback: str, context_chunks: list[dict]) -> float:
+        """Check faithfulness of feedback to context.
+    
+        Args:
+            feedback: Generated feedback text
+            context_chunks: Retrieved context chunks
+    
+        Returns:
+            Faithfulness score 0.0-1.0 (ratio of supported claims)
+        """
+        if not feedback or not context_chunks:
+            logger.info(
+                "faithfulness_empty_input",
+                has_feedback=bool(feedback),
+                has_chunks=bool(context_chunks),
+            )
+            return 0.0
+    
+        # Extract key claims from feedback (sentences)
+        claims = self._extract_claims(feedback)
+        if not claims:
+            logger.info("faithfulness_no_claims_extracted")
+            return 0.5  # Default to neutral if no extractable claims
+    
+        # Concatenate context text
+>       context_text = " ".join([chunk.get("text", "") for chunk in context_chunks])
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: sequence item 0: expected str instance, NoneType found
+
+rag/evaluator/faithfulness_checker.py:38: TypeError
+=========================== short test summary info ============================
+FAILED tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text
+======================= 1 failed, 21 deselected in 0.04s =======================
+Exit status: 1
+
+## Existing missing-key control test
+$ /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python -m pytest tests/unit/test_faithfulness_checker.py -v -m unit -k test_missing_text_key_in_chunk
+============================= test session starts ==============================
+platform darwin -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork
+configfile: pyproject.toml
+collecting ... collected 22 items / 21 deselected / 1 selected
+
+tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_missing_text_key_in_chunk PASSED [100%]
+
+======================= 1 passed, 21 deselected in 0.02s =======================
+Exit status: 0
+
+## Evaluator test file, normal markers
+$ /Users/jonathanpan/dev/codepath/pathreview-ai301-fa26-s3-fork/.venv/bin/python -m pytest tests/unit/test_faithfulness_checker.py -q -m unit
+..x...x......x....x...                                                   [100%]
+18 passed, 4 xfailed in 0.05s
+Exit status: 0
+
+## Final working tree
+$ git status --short
+
+Exit status: 0

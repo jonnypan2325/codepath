@@ -1,0 +1,13 @@
+repro-check: grade my claim comment in claim.md and repro comment in repro.md for issue https://github.com/codepath/pathreview-ai301-fa26-s3/issues/60.
+
+Use LIVE MODE from the installed skill at /Users/jonathanpan/.claude/skills/repro-check. Read SKILL.md, scope.md, rubric.md, references/evidence-guide.md and voice-guide.md there. These are unposted drafts; no posting or file edits are requested.
+
+Gather live issue evidence with this read-only command:
+gh issue view 60 --repo codepath/pathreview-ai301-fa26-s3 --json title,body,url,state,comments
+Read the live contribution policy with:
+gh api --method GET repos/codepath/pathreview-ai301-fa26-s3/contents/docs/CONTRIBUTING.md -H 'Accept: application/vnd.github.raw+json'
+The PR template, if relevant, can be read with:
+gh api --method GET repos/codepath/pathreview-ai301-fa26-s3/contents/.github/PULL_REQUEST_TEMPLATE.md -H 'Accept: application/vnd.github.raw+json'
+No issue-side credentials, changes, comments, or submissions are needed. Apply the skill's claim-only exceptions if grading just the claim. For the full package, grade exactly the text in claim.md and repro.md, without filling gaps from unrelated private files. Respect that the report describes an AI-operated local preparation run and the claim promises later verification from a fork. Report true shortcomings if any; do not weaken the rubric to obtain an accept.
+
+Give the skill's per-check evidence and voice-guide notes, then end with the exact fenced JSON output required by SKILL.md. Do not perform another reproduction, grade eval packages, edit files, create a fork, post, push, or submit anything.

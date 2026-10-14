@@ -1,0 +1,54 @@
+{
+  "prepared_at_utc": "2026-09-30T05:40:11.813839+00:00",
+  "smoke_runs": [
+    [
+      5,
+      6
+    ],
+    [
+      3,
+      3
+    ]
+  ],
+  "full_agreement": [
+    20,
+    20
+  ],
+  "categories_matched": [
+    "clear-accept",
+    "disclosure",
+    "no-evidence",
+    "unfollowable-comms",
+    "wrong-target"
+  ],
+  "live_verdicts": {
+    "claim": "accept",
+    "full": "accept"
+  },
+  "harness_package_calls": 29,
+  "course_estimate_for_harness_usd": 5.8,
+  "live_cli_reported_cost_usd": {
+    "claim-live-01": 0.1890304,
+    "full-live-01": 0.2357788,
+    "full-live-02": 0.18645460000000003
+  },
+  "actual_account_charge_verified": false,
+  "external_publication_performed": true,
+  "claim_comment_url": "https://github.com/codepath/pathreview-ai301-fa26-s3/issues/60#issuecomment-5905217025",
+  "claim_posted_by": "user",
+  "claim_posted_at_utc": "2026-09-30T06:08:35Z",
+  "fork_url": "https://github.com/jonnypan2325/pathreview-ai301-fa26-s3",
+  "confirmation_at_utc": "2026-09-30T06:10:56.898455+00:00",
+  "current_full_package_verdict": null,
+  "current_full_package_grade": "full-live-02",
+  "reproduction_comment_posted": true,
+  "assistant_posted_comments": false,
+  "external_actions": "User posted claim; assistant created public fork. No reproduction comment, source-code push, coursework push or portal submission.",
+  "reproduction_comment_url": "https://github.com/codepath/pathreview-ai301-fa26-s3/issues/60#issuecomment-5905342853",
+  "reproduction_posted_by": "user",
+  "reproduction_posted_at_utc": "2026-09-30T06:18:15Z",
+  "personal_rerun_confirmation": "User explicitly confirmed they personally reran and verified the commands before posting.",
+  "prepublication_full_package_verdict": "accept",
+  "postpublication_change": "Only the AI-assistance sentence changed to a claim of personal execution; no new grading run has been represented as validating this factual claim.",
+  "ready_for_coursework_commit": true
+}

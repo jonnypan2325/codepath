@@ -1,0 +1,51 @@
+## Package identification
+
+This is a **full package**: `claim.md` (a claim comment) and `repro.md` (a repro report) both exist for issue #60 in the scoped repo `codepath/pathreview-ai301-fa26-s3`. Per SKILL.md, I grade every rubric check, full verdict rule.
+
+## Per-check evidence
+
+**environment-recorded — pass**
+`repro.md`: "macOS 26.6.2 (arm64), Python 3.11.16, structlog 26.1.0, pytest 9.1.1" plus "unchanged commit `2f4e82f52efbcfcc57d65b3fa5348672163ca088`" — matches the commit other commenters on the live issue also tested against. Python 3.11.16 sits inside the project's `requires-python = ">=3.11"`. All fields the evidence guide names (revision, OS, runtime/dep versions) are present.
+
+**steps-rerunnable — pass**
+`repro.md` gives a fresh-checkout recipe (`git clone` → `git checkout <sha>` → venv → pinned `pip install` → the exact one-liner from the issue body). A stranger can repeat it verbatim; the trigger input (`{'text': None}`) is unchanged from the issue.
+
+**observable-evidence — pass**
+Quotes the actual traceback (`TypeError: sequence item 0: expected str instance, NoneType found` at `faithfulness_checker.py:38`) and a results table for six distinct commands (controls, named test with/without `--runxfail`, missing-key test, full file run). Not an "attached"/asserted claim — the content is inline.
+
+**target-behavior — pass**
+The quoted traceback's exception type, message, and line number match the live issue body exactly (`" ".join([chunk.get("text", "") ...])` → same `TypeError`). This is a genuine reproduction of the named bug, not an unrelated error.
+
+**outcome-honest — pass**
+`repro.md` separates fact from scope carefully: states what was and wasn't run ("The full `make setup` sequence, database/migrations, API, frontend/Jest, integration tests, lint and type checks were not run"), correctly reports XFAIL vs. forced-FAIL instead of claiming "tests pass," and labels the cause as established by its own controls rather than asserted. It closes with an explicit, non-overclaiming AI-attribution line ("Codex... executed the recorded commands... not a claim that I independently executed or reviewed every command"), which is the disclosed-AI framing the task told me to expect and not penalize.
+
+**claim-specific-and-constructive — pass**
+`claim.md` names the exact failing call (`FaithfulnessChecker.check()`, `text: None` chunk) and states a concrete next action (verify the snippet and `test_none_context_chunk_text`, compare the missing-key case, then post environment/commands/results) — no generic enthusiasm, no blame, no priority demands.
+
+**repository-conventions — pass**
+The live `docs/CONTRIBUTING.md` states no AI-disclosure requirement at all (silence, not a permissive-with-responsibility clause). Per the rubric, silence creates no additional disclosure obligation — but both drafts disclose anyway ("This work is AI-assisted, including drafting and local command execution" / "AI assistance: Codex drafted this report..."), consistent with the norm every other commenter on the live thread (pkmaster21, sid-pandya, dannguyen111) followed. No fork/branch/PR-template conventions apply to an issue comment (those gate PRs, not reproduction comments). No parallel-claim conflict: Path Review's house rule explicitly allows posting a claim despite four other classmates' claims already on the thread, and this draft does not piggyback — it's independent work.
+
+## Voice-guide notes
+
+Both drafts track the guide closely and I found no broken rule:
+- "Lead with the behavior and the next useful action" — followed near-verbatim in `claim.md`.
+- "Separate plans, observations, and hypotheses... attribute AI-operated commands accurately" — followed; neither draft claims personal execution it didn't do.
+- "Give a compact, reproducible ticket" and "Report only the checks actually run" — followed; the XFAIL/`--runxfail` distinction in the results table mirrors the guide's own worked example.
+
+One soft inconsistency worth flagging (not a rubric failure): `claim.md` promises to verify "from my fork," but `repro.md`'s clone command targets the upstream repo (`codepath/pathreview-ai301-fa26-s3.git`) directly rather than a fork URL. It doesn't create a false claim or break reproducibility — it's arguably more convenient for a stranger — but the two drafts don't literally agree on that one detail, and it'd read cleaner if `claim.md` didn't specify "from my fork" or `repro.md` matched it.
+
+```json
+{
+  "item": "https://github.com/codepath/pathreview-ai301-fa26-s3/issues/60",
+  "checks": [
+    {"name": "environment-recorded", "grade": "pass", "evidence": "repro.md states OS/Python/structlog/pytest versions plus the unchanged commit SHA 2f4e82f... matching the issue thread"},
+    {"name": "steps-rerunnable", "grade": "pass", "evidence": "repro.md gives a fresh-clone-to-command recipe using the issue's exact `{'text': None}` trigger"},
+    {"name": "observable-evidence", "grade": "pass", "evidence": "repro.md quotes the actual traceback and a six-row results table for the commands run"},
+    {"name": "target-behavior", "grade": "pass", "evidence": "Quoted TypeError message and faithfulness_checker.py:38 line match the live issue body exactly"},
+    {"name": "outcome-honest", "grade": "pass", "evidence": "repro.md explicitly scopes what wasn't run and labels the AI-executed nature of the run rather than claiming personal verification"},
+    {"name": "claim-specific-and-constructive", "grade": "pass", "evidence": "claim.md names FaithfulnessChecker.check() and the text: None chunk, then states a concrete next action"},
+    {"name": "repository-conventions", "grade": "pass", "evidence": "Live CONTRIBUTING.md has no AI-disclosure requirement (silence); both drafts disclose AI use anyway, matching the thread's norm"}
+  ],
+  "verdict": "accept"
+}
+```

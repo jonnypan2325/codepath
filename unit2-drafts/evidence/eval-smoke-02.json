@@ -1,0 +1,148 @@
+{
+  "rubric": "/Users/jonathanpan/.claude/skills/repro-check/rubric.md",
+  "evidence": "/Users/jonathanpan/.claude/skills/repro-check/references/evidence-guide.md",
+  "model": "sonnet",
+  "agreement": [
+    3,
+    3
+  ],
+  "results": [
+    {
+      "id": "pkg-05",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states conda 26.7.0 (miniforge3), Python 3.12.7, macOS 15.5 (osx-arm64), libmamba solver \u2014 closely matches issue's environment with no unexplained mismatch."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Exact command given (`conda env update --quiet --json -f env.yml 2>/dev/null`); minimal env.yml with dependencies + category section described as an explicit, transparent simplification of the trigger."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quotes both the raw warning-before-JSON stdout output and the follow-on `python3 -m json.tool` failure `Expecting value: line 1 column 1 (char 1)`."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Reproduced output shows the identical `EnvironmentSectionNotValid` text preceding the JSON blob on stdout, matching the issue's exact failure signature."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States Expected vs Actual plainly; claim comment frames the root-cause trace as planned future work, not a completed finding."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the specific behavior (EnvironmentSectionNotValid breaking --json) and proposes tracing the emission path as next action."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "CONTRIBUTING.md AI policy is permissive-with-responsibility (no disclosure mandate); comment is on an existing issue so new-issue duplicate-search checkbox doesn't apply."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-07",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states p5.js 1.11.7 (CDN), Chrome 139.0, macOS 14.6, and explicitly notes the issue was filed against 1.9.4/1.10.0 while confirming presence on 1.11.7."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Full HTML/JS snippet with `let value = 0` in setup, exact Chrome language-priority steps via chrome://settings/languages, and reload instructions are given."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quotes actual console output for both Japanese-first (TypeError) and English-first control (correct FES message) runs."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Console TypeError text and the correct FES message text both match the issue's quoted output verbatim, not just 'some error in the same tool'."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected vs actual outcomes; the 'matches exactly' claim is supported by the literal output quoted, not asserted without evidence."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the version tested, the exact reproduction condition, and a concrete next investigative step (translator load timing vs. FES firing)."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Policy is permissive-with-responsibility (no mandated tool/extent format); candidate discloses AI helped organize the report and states the author ran/verified every step themselves, satisfying the requirement; all bug-template fields (version, OS, browser+version, actual/expected, steps+snippet) are present."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-20",
+      "verdict": "reject",
+      "failed_checks": [
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"ghostty 1.3.1 (release build, Fedora 42 RPM), GTK backend, GNOME 48 (Wayland), dark system scheme\""
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Exact config content, launch command with flags, and query commands given for both single-theme and control runs"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quoted terminal captures: `^[[?997;2n` and `^[[?997;1n`"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Single-theme run returns 997;2 (light) and conditional-pair run returns 997;1 (dark), matching the issue's exact failure pattern"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "Expected/actual stated plainly; future patch-testing described as \"Next I want to test\", not claimed as done"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim cites the specific mode-2031/theme behavior and proposes testing the draft patch as next action"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Repo facts require all AI usage disclosed with tool and extent; neither candidate comment contains any disclosure"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    }
+  ]
+}

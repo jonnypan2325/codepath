@@ -1,0 +1,14 @@
+grading 3 package(s) with rubric.md + evidence-guide.md, model sonnet, 3 worker(s)...
+  pkg-20: reject
+  pkg-07: accept
+  pkg-05: accept
+
+item    gold    verdict  agree  note
+pkg-05  accept  accept   yes    
+pkg-07  accept  accept   yes    
+pkg-20  reject  reject   yes    
+
+categories: clear-accept 2/2  disclosure 1/1
+agreement: 3/3 scored items
+partial run: the bar and the category floor are decided only by a full run. A loosened check can flip a package that agreed before; add a canary from each single-package category your change touches to --only before the confirming full run.
+full results written to /Users/jonathanpan/dev/codepath/unit2-drafts/evidence/eval-smoke-02.json

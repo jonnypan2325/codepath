@@ -1,0 +1,298 @@
+{
+  "rubric": "/Users/jonathanpan/.claude/skills/repro-check/rubric.md",
+  "evidence": "/Users/jonathanpan/.claude/skills/repro-check/references/evidence-guide.md",
+  "model": "sonnet",
+  "agreement": [
+    5,
+    6
+  ],
+  "results": [
+    {
+      "id": "pkg-01",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"HTTPie 3.2.4 (pip), Python 3.12.4, multidict 6.6.0, macOS 14.5 (arm64)\" identifies tool version, OS, and the thread-relevant multidict version"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Exact `http --offline post pie.dev/post 'header1: xyz' x=1` command plus a zero-header control command, both runnable offline"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Full request-header output quoted for both the trigger run and the control run"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Candidate's single-header output (no Content-Type) matches issue step 1's output essentially verbatim"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected vs. actual plainly; claim frames the multidict link as something to \"check\" next, not an established cause"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the exact behavior (one custom header, 3.2.4, offline repro) and a concrete next step, no blame/enthusiasm filler"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "No stated AI policy (none invented); existing-issue comment need not repeat new-issue duplicate-search checkboxes; version/minimal-repro expectations met"
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-02",
+      "verdict": "reject",
+      "failed_checks": [
+        "steps-rerunnable",
+        "target-behavior",
+        "outcome-honest"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"bat 0.26.1 (installed via cargo), rustc 1.96.0, Fedora 44 (x86_64)\""
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "Report runs `--line-range '18446744073709551614:'` while claiming to follow the issue's syntax, but the issue's trigger is `--line-range ':-18446744073709551614'` \u2014 a different range form, substituted without disclosure"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quotes the actual command, error text, and `$ echo $?` \u2192 `1`"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "Issue reports a panic/`capacity overflow` with exit 101; candidate's output is `error: Invalid value for '--line-range'...` with exit 1 \u2014 an argument-parse error, not the target panic"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "\"can confirm it is fully reproducible,\" \"crashes exactly as described,\" \"ran this ten times\" \u2014 all asserted despite the artifact showing an unrelated parse error, not the reported crash"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names `line_range.rs` and a concrete next action (validate `--line-range` values)"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "No AI-disclosure policy in repo facts; version/install/OS roughly satisfy template fields; comment on existing issue, not a new-issue submission"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-04",
+      "verdict": "reject",
+      "failed_checks": [
+        "environment-recorded",
+        "steps-rerunnable",
+        "observable-evidence",
+        "target-behavior",
+        "outcome-honest",
+        "claim-specific-and-constructive",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "fail",
+          "evidence": "No OS, fzf version, or shell stated anywhere in the report."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "No commands, payload, terminal size, or flags given; only 'whenever there are tabs in the input'."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "fail",
+          "evidence": "No quoted output/log/own screenshot; report only references 'the screenshots' from other commenters."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "No input/command/artifact shown, only the assertion 'exactly the same behavior as described above'."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "'Can confirm' and 'definitely still a bug' claimed with no supporting evidence in the text."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "fail",
+          "evidence": "'+1 also seeing this!! ... any updates on a fix?? would love for this to get resolved soon \ud83d\ude4f' is generic +1/pressure with no distinguishing detail or next action."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Bug template requires OS, shell, and steps to reproduce; none of these are present in either comment."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-06",
+      "verdict": "reject",
+      "failed_checks": [
+        "environment-recorded",
+        "steps-rerunnable",
+        "target-behavior",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "fail",
+          "evidence": "Report states no OS or driver anywhere, despite the issue being Windows-specific and the bug template requiring OS and driver."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "Candidate drops the issue's `--driver vmware` and `--cleanup` flags without noting or justifying the change."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Timestamped log excerpt shows the repeating `route.go` ADD/retry cycle tied to the stated commands."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "Log shows `error adding route: exit status 1, retrying`, a real nonzero exit code, whereas the issue describes minikube misreading a successful route command as failed \u2014 not clearly the same mechanism."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected ('route added once, tunnel running') vs actual ('same line repeats indefinitely') without overclaiming root cause."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the specific mechanism ('how the tunnel manager parses the route command's output on Windows') and a concrete next step."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Bug template requires OS, driver, and `minikube logs` output; the report supplies none of these."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-09",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"fd 10.4.2 (pacman), Arch Linux (x86_64), kernel 6.15, getconf ARG_MAX = 2097152\" matches issue version and gives OS plus the size-limit-relevant ARG_MAX."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Deterministic file-creation loop (fixed suffix, varying counter) plus the exact fd --exec-batch command are both given in full."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quoted /tmp/order.log output (\"ONE ONE ONE TWO TWO TWO\") tied to the shown command."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Attempt genuinely tries to force one command's arg-list past ARG_MAX before the other, observes no reordering, and limits the conclusion instead of claiming confirmation."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "\"could NOT reproduce scenario 2\" with expected/actual stated and the missing-differential explanation flagged as hypothesis (\"may not achieve that\", \"may be required\")."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names \"scenario 2 (the argument-size flush reordering)\" and proposes building the thread's suggested acceptance test."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Repo facts: \"policy states no disclosure ask for issue comments\"; this is a reproduction comment on an existing issue, so new-issue template checkboxes don't apply."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-20",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"ghostty 1.3.1 (release build, Fedora 42 RPM), GTK backend, GNOME 48 (Wayland), dark system scheme\" plus config file content in Steps."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Config content, exact launch command with flags, exact query command, and a second control run with the conditional theme are all supplied."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quoted terminal captures `^[[?997;2n` and `^[[?997;1n` tied to the documented commands."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Reproduces the issue's exact contrast: single non-conditional theme wrongly answers light (997;2) vs. conditional pair correctly answering dark (997;1)."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected vs. actual plainly and frames the patch test as future work (\"Next I want to test... report back before opening a PR\")."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Names the specific mode-2031/non-conditional-theme behavior, the tested release, and a concrete next step."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Provides version, configuration, and platform as the bug template requests; no AI use is claimed, so no disclosure is owed."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    }
+  ]
+}

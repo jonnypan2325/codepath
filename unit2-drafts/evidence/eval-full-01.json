@@ -1,0 +1,967 @@
+{
+  "rubric": "/Users/jonathanpan/.claude/skills/repro-check/rubric.md",
+  "evidence": "/Users/jonathanpan/.claude/skills/repro-check/references/evidence-guide.md",
+  "model": "sonnet",
+  "agreement": [
+    20,
+    20
+  ],
+  "results": [
+    {
+      "id": "pkg-01",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states HTTPie 3.2.4 (pip), Python 3.12.4, multidict 6.6.0, macOS 14.5 (arm64) \u2014 matches latest release and names the dependency relevant to the known root cause."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Exact `--offline` commands given for both one-header and zero-header cases; the deviation from the issue's `https -v` invocation is explicitly justified in the claim and preserves the header-count trigger."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Full request-header output quoted for both runs, not merely an assertion of confirmation."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Output reproduces the exact issue signature: Content-Type present with 0 headers, absent with 1 custom header."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected vs. actual outcomes plainly and frames the multidict/apply_missing_repeated_headers link as a hypothesis to check next, not a confirmed cause."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the specific single-header trigger and offline repro, and proposes a concrete next investigative step."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Repo facts show no stated AI policy, so silence creates no disclosure requirement; comment is on an existing issue so new-issue duplicate-search checkboxes don't apply; tested version 3.2.4 matches the latest release."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-02",
+      "verdict": "reject",
+      "failed_checks": [
+        "steps-rerunnable",
+        "target-behavior",
+        "outcome-honest"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "bat 0.26.1 (cargo), rustc 1.96.0, Fedora 44 x86_64, kernel given"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "used '18446744073709551614:' instead of the issue's ':-18446744073709551614', narrated as 'following the report's syntax' with no disclosure of the change"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "quotes actual command output and exit code, not a bare assertion"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "issue shows panic 'capacity overflow' exit 101; candidate shows 'error: Invalid value for --line-range' exit 1 \u2014 a validation error from a different input, called confirmation of the crash"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "claims 'confirmed and consistent... ran this ten times' and 'confirming the reported crash' while the shown output is a parse error, not a crash"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "names line_range.rs and a concrete next action (investigate validation)"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "repo facts state no AI-disclosure policy; requested template fields (version, install, environment, steps, expected/actual) are all present"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-03",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "States ripgrep 15.2.0 (cargo install), Arch Linux (x86_64), and explicitly notes the issue was filed against 13.0.0 with behavior unchanged on 15.2.0."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Recreated test.txt with the exact 12 lines from the issue and ran the issue's exact `rg -nU ... -r '$1' test.txt` command."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quotes actual command output: 1:fnord, 2:boccob, 3:d321fdddffff, 4:clowns."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Output pattern (1,2,3,4 instead of 1,4,7,10) matches the issue's failure signature, and dropping `-r` reproduces the owner's noted --replace dependency."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected (1,4,7,10) vs actual (1,2,3,4) without claiming a root cause or exaggerating scope."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names grep-printer/standard printer and a concrete next reading step, not generic enthusiasm."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Bug template fields all present; AI policy requires human-authored wording but states no explicit disclosure requirement (permissive-with-responsibility)."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-04",
+      "verdict": "reject",
+      "failed_checks": [
+        "environment-recorded",
+        "steps-rerunnable",
+        "observable-evidence",
+        "target-behavior",
+        "outcome-honest",
+        "claim-specific-and-constructive",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "fail",
+          "evidence": "No OS, shell, or fzf version stated anywhere in the report."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "No commands, flags, payload, or terminal setup given; only 'whenever there are tabs in the input.'"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "fail",
+          "evidence": "No output/log/screenshot content; only 'just like the screenshots show.'"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "No actual attempt or artifact shown, just an unsupported claim of 'exactly the same behavior.'"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "'Can confirm this happens for me too' and 'definitely still a bug' assert confirmation with no supporting artifact."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "fail",
+          "evidence": "Claim is generic enthusiasm/pressure ('+1 also seeing this!! any updates on a fix??') with no distinguishing detail or next action."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Bug template requests OS/shell fields; report supplies neither."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-05",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states conda 26.7.0 (miniforge3), Python 3.12.7, macOS 15.5 (osx-arm64), libmamba solver \u2014 matches the granularity of the issue's own reported environment"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Minimal env.yml with dependencies: plus category: section explicitly described, then exact reproducing command shown; substitution for the original conda-lock URL is identified and justified"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quotes raw stdout mixing warning+JSON and a follow-up python3 -m json.tool parse failure tied to the described command"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Reproduced EnvironmentSectionNotValid warning printed to stdout ahead of JSON under --json with stderr discarded \u2014 same failure signature as the issue"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States Expected vs Actual outcomes plainly; claim frames tracing the emission path as planned future work, not a completed finding"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the specific symptom and states a concrete next action (trace the exceptions path) without generic filler"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "CONTRIBUTING.md AI policy is permissive-with-responsibility (no disclosure mandate); duplicate-search checkbox is a new-issue requirement, not applicable to a comment on an existing issue"
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-06",
+      "verdict": "reject",
+      "failed_checks": [
+        "environment-recorded",
+        "steps-rerunnable",
+        "target-behavior",
+        "outcome-honest",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "fail",
+          "evidence": "Report states no OS, minikube version, or driver anywhere in the text, though the issue is Windows/driver-specific and the bug template requests both."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "Issue trigger is `minikube start --driver vmware` + `minikube tunnel --cleanup --alsologtostderr`; candidate ran `minikube start` and `minikube tunnel --alsologtostderr`, dropping the driver and `--cleanup` flag without noting or justifying the change."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Report quotes an actual log excerpt with timestamps and repeated `route ADD` / `error adding route: exit status 1, retrying` lines."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "Issue describes minikube misreading the Windows route command's status (looping despite a successful/different response); candidate log shows an explicit `exit status 1` route failure with no stated OS, so it may be a different, unrelated route failure rather than the reported misparse."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "Headline \"Reproduced the endless route-add loop\" asserts confirmation of the exact bug without establishing the OS/driver needed to support that conclusion given the differing failure signature."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the specific mechanism (\"how the tunnel manager parses the route command's output on Windows\") and a concrete next action, not generic enthusiasm."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Bug template requires OS, driver, and `minikube logs` output; candidate report supplies none of the three."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-07",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states p5.js 1.11.7 (CDN), Chrome 139.0, macOS 14.6, and explicitly notes/justifies the version difference from the issue's 1.9.4/1.10.0."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Full sketch snippet with `let value = 0`, exact language-switch and reload steps, plus a control (English-first) step are all supplied."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Verbatim console output quoted for both Japanese-first (TypeError) and English-first (FES message) runs."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Quoted Japanese-first error matches the issue's exact TypeError/'translator called before translations were loaded' text; English-first control reproduces the issue's contrast."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "Expected/Actual stated plainly; conclusion is tied directly to the quoted output with no unsupported generalization or false claim of repeated runs/root cause."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim cites the specific bug, tested version/language conditions, and a concrete next step (investigating translator load order) with no blame or generic filler."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Bug template fields (version, OS, browser, actual/expected, steps+snippet) are all present; AI disclosure names the assistant's role, extent, and states personal verification/responsibility, matching the permissive-with-responsibility policy."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-08",
+      "verdict": "reject",
+      "failed_checks": [
+        "steps-rerunnable",
+        "target-behavior",
+        "outcome-honest"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"jq 1.8.2 (Homebrew), macOS 15.5 (arm64)\" identifies version and OS"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "Command run is `path({} as {$b} | $b)`, altering the issue's `| .` tail to `| $b` without disclosing or justifying the change"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quoted actual terminal output: `jq: error: $b is not defined at <top-level>...`"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "Issue's failure is a runtime 'Invalid path expression' error; candidate's output is a compile-time 'not defined' error \u2014 different failure signature called confirmation"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "Claims 'thoroughly reproduced and confirmed... exactly as reported' and 'conclusively demonstrates' despite the shown error not matching the issue's described behavior"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim references the issue's draft patch as its planned starting point, tying it to this specific issue, and states a next action"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Repo facts: 'no stated AI policy'; comment is on an existing issue, not a new bug-report submission requiring template fields"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-09",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"fd 10.4.2 (pacman), Arch Linux (x86_64), kernel 6.15, `getconf ARG_MAX` = 2097152\" matches issue version 10.4.2 and supplies the ARG_MAX value relevant to this trigger"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Exact shell commands given: file-creation loop, the two-command `--exec-batch` invocation, and `cat /tmp/order.log`, fully repeatable by a stranger"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quoted log output \"ONE ONE ONE TWO TWO TWO\" from an actual run of the documented command"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Attempt specifically padded command TWO's arguments to try to force it to hit the size limit first (the exact scenario-2 condition), observed no reordering, and honestly flagged that the padding approach may not have produced the required differential rather than claiming the bug is absent"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected vs. actual outcome, labels uncertainty as hypothesis (\"may not achieve that,\" \"may be required\"), and explicitly scopes the result to scenario 2 only (\"I did not test scenario 1\")"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the exact scenario (\"argument-size flush reordering\") and proposes the thread's suggested acceptance test as next work"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Repo facts state \"the policy states no disclosure ask for issue comments,\" so no AI disclosure is required for this comment/report pair, and version/OS fields are supplied as the template requests"
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-10",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report gives starship 1.26.0/zsh 5.9/Ubuntu 24.04 and explicitly flags OS+shell mismatch vs. macOS+fish 4.7.1"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Exact mkdir/git init/symlink/config/cd commands reproduce the reported symlink layout"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quotes actual prompt output and states starship explain lists the directory module"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Faithful attempt at the exact layout/config, non-failure observed, conclusion limited to hypothesis about fish's logical PWD"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "PWD-resolution explanation phrased as 'suggests'/'looks necessary', not asserted as confirmed"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names symlink/repo_root_style behavior and proposes fish+macOS env plus reading contract_repo_path as next step"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Repo facts: 'no stated AI policy'; bug-report template applies to new issues, not this existing-issue comment"
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-11",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states 'yq 4.53.3 (Homebrew), macOS 15.5 (arm64)'; claim explicitly discloses testing on macOS vs. issue's linux/pacman"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Exact printf commands reproduce file contents and the yq eval command matches the issue's trigger verbatim, plus a control with \u2705"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quoted terminal output shown for both the \ud83d\udea7 run (escaped single-line) and \u2705 control (block scalar)"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "\ud83d\udea7 input collapses to quoted single-line with \\n escapes while \u2705 produces the expected block scalar, matching the issue's exact character-dependent failure"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "Claim uses 'seems to be' for the mechanism and proposes to 'verify... and report back' rather than asserting a confirmed cause or completed investigation"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim identifies the character-class-dependent emitter behavior and proposes checking vendored go-yaml against the linked upstream fix"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Repo facts show no stated AI policy (no disclosure required); report supplies version/OS/install, a short input doc, command, and actual/expected behavior per the bug template"
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-12",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "prettier 3.9.6 (npm), Node 22.23.1, macOS 14.6 (arm64); notes issue was filed on 3.8.4 and scopes conclusion to '3.9.6' tested"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "ran issue's script verbatim via `node repro.mjs` with restated rangeStart/rangeEnd/parser values matching the issue exactly"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "quotes actual corrupted output for both shapes plus the re-parse SyntaxError for shape A"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "output reproduces the issue's exact corruption: `});`\u2192`};);` (unparseable) and `};`\u2192`};;`"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "states expected vs. actual plainly; 'not specific to 3.8.4' is directly supported by the reported 3.9.6 test"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "names the specific bug and both shapes, proposes tracing the closing-boundary logic from the #12964 fix"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "covers all template fields (version, runnable repro, input via explicit reference, actual/expected output); AI policy is permissive-with-responsibility, not a disclosure mandate"
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-13",
+      "verdict": "reject",
+      "failed_checks": [
+        "environment-recorded",
+        "steps-rerunnable",
+        "observable-evidence",
+        "target-behavior",
+        "outcome-honest",
+        "claim-specific-and-constructive",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "fail",
+          "evidence": "Report states only 'Windows 11' and irrelevant GPU/RAM specs; omits Windows Terminal version and Windows build number required by the bug template."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "\"I run long Claude Code sessions on Windows 11 and after a few hours...\" gives no concrete workload, duration, or configuration a stranger could repeat."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "fail",
+          "evidence": "No log, output, or screenshot is quoted anywhere; only assertions like 'Can 100% confirm this bug' and 'everything is choppy.'"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "Report never tests the DWM-restart-only recovery or reports the resource diagnostics (RAM/paging/handle counts/DWM CPU%) that distinguish this bug from ordinary lag."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "\"so this is definitely the DWM bug from this issue and not my machine\" and \"guaranteed reproducible\" assert certainty with no supporting evidence."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "fail",
+          "evidence": "\"I want to help with this one, it has been driving me crazy for months!... Assigning myself to this\" is generic enthusiasm plus a self-assignment request, no distinguishing detail."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Bug template requires Windows Terminal version and Windows build number; both are missing from the report."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-14",
+      "verdict": "reject",
+      "failed_checks": [
+        "steps-rerunnable",
+        "observable-evidence",
+        "target-behavior",
+        "outcome-honest",
+        "claim-specific-and-constructive"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states 'zellij 0.44.3 (cargo install), Windows 11 (10.0.26100), Windows Terminal 1.24' \u2014 version, OS, install method, terminal all identified, difference from issue's Windows 10/Alacritty is disclosed."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "Issue requires 'wait, then action dump-screen -p terminal_N for each pane'; report only says session 'launches with all three tabs showing' and never performs the dump-screen check."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "fail",
+          "evidence": "'The screenshot I took shows the zellij session running with the three tabs visible' \u2014 content of screenshot not shown, no dump-screen or pane-state output provided."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "Report's actual observation is 'the tabs are all present' \u2014 this addresses layout loading, not the issue's blank/unresponsive-pane failure signature, which was never checked."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "'This confirms the bug report's scenario is reproducible on my machine' \u2014 stated as confirmed despite no observation of the blank-pane symptom itself."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "fail",
+          "evidence": "Claim states 'I have reproduced the dead pane on my machine (evidence below)' but the repro report supplies no such evidence."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Repo facts list 'no stated AI policy'; report supplies version/terminal/OS as requested by the bug template."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-15",
+      "verdict": "reject",
+      "failed_checks": [
+        "steps-rerunnable",
+        "observable-evidence",
+        "target-behavior",
+        "outcome-honest",
+        "claim-specific-and-constructive",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"Environment: Joplin 3.7.10, Windows 11\" matches the issue's Windows/3.7.10 report"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "report gives no typing/switching actions or timing at all, only 'I reproduced this bug and identified the exact root cause'"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "fail",
+          "evidence": "no log, output, traceback, or screenshot content anywhere in the report"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "'exactly as the issue describes' is asserted with no artifact to compare against the issue's failure signature"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "'I verified this race condition is the cause' and 'I am confident this is the correct diagnosis' state a confirmed root cause with no supporting evidence"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "fail",
+          "evidence": "claim's next-action rests on 'I've already reproduced it and tracked down the root cause,' work not evidenced anywhere in the report"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "bug template requires logs; report supplies none"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-16",
+      "verdict": "reject",
+      "failed_checks": [
+        "environment-recorded",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "fail",
+          "evidence": "Report states only 'pandas 1.5.3 (pip), Python 3.10.12, Ubuntu 22.04' with no pd.show_versions() output and no confirmation on latest release/main branch, though the repo template requires both and the issue itself was confirmed on a main-branch build."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Steps reproduce the issue's exact reproducible example verbatim: `pd.Index([1], name=(1,2,3))` then `df.reset_index().rename_axis((1,2,3))`."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Full traceback quoted ending in 'ValueError: Length of new names must be 1, got 3'."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "The quoted ValueError matches the issue's described runtime crash and aaron-seq's thread diagnosis of the set_names length check."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "States expected ('rename_axis accepts the tuple') vs actual (ValueError raised) without claiming an established root cause."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the reproduced crash, cites the thread's Index.set_names pointer, and proposes investigating scalar-wrapping as next action."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Bug template explicitly asks for pd.show_versions() output and confirmation on latest/main branch; neither is present, and testing pandas 1.5.3 instead is not flagged as a deviation."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-17",
+      "verdict": "reject",
+      "failed_checks": [
+        "target-behavior",
+        "outcome-honest"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Report states WT 1.24.11911.0 (Store), Windows 11 26H2 Build 26300.9032, PowerShell 7.6.4, Sixel module 1.1.2."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "Install-Module Sixel; download a test PNG; run ConvertTo-Sixel -Path .\\test.png \u2014 a repeatable command sequence."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quotes actual scrolled escape-sequence output: 'q\"1;1;512;512#0;2;97;97;97#1;2;80;80;78...'."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "fail",
+          "evidence": "Issue reports the terminal process crashing; report states 'The window remained open afterward and the prompt returned' \u2014 no crash, a different failure mode (garbled/unrendered sixel output)."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "fail",
+          "evidence": "Conclusion claims 'verifiably broken... matching this issue' and that it 'confirms the bug on the current Store release,' contradicting the report's own observation that the terminal did not crash."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Claim names the sixel behavior and states a next action (start from the sixel output path) rather than generic enthusiasm."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "Report supplies all bug-template fields (version, build, other software, steps, expected, actual); no stated AI policy so silence adds no disclosure requirement."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-18",
+      "verdict": "reject",
+      "failed_checks": [
+        "steps-rerunnable",
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "Environment: golangci-lint v1.55.2 (binary release), Go 1.21, macOS 14."
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "fail",
+          "evidence": "\"private; I cannot share it or its layout\" / internal .golangci.yml \"not shareable\" \u2014 essential inputs withheld, nothing a stranger can repeat."
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "Quoted panic/stack trace output tied to the described run."
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "Output shows \"can't run linter goanalysis_metalinter: panic occurred\" and gomodguard.(*Processor).processFiles, matching the issue's exact failure signature."
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "Hedges the diagnosis as \"looks essential\" rather than claiming a confirmed root cause; reports the control test's actual (non-)result."
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "Names the specific gomodguard panic and proposes coordinating with the upstream gomodguard issue."
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "Repo facts request \"the configuration\" and \"a code example\"; report explicitly withholds both as proprietary/unshareable."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-19",
+      "verdict": "reject",
+      "failed_checks": [
+        "claim-specific-and-constructive"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"@vue/compiler-sfc 3.6.0-rc.2 via the official SFC playground (Chrome 139, macOS 14.6)\" matches issue's Version 3.6.0-rc.2"
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "\"re-created it from scratch in a fresh playground\" reproducing the exact selector list, :deep() member, and nested > span rule from the issue"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "quotes the playground's actual CSS output pane and describes adding a sibling component to confirm the global leak"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "produced output shows \".a\" unscoped while \".b[data-v-7ba5bd90] .c\" is scoped, matching the issue's exact failure signature"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "states expected (\".a[data-v-7ba5bd90]\") vs actual (\".a\" unscoped) without overclaiming root cause, and backs the leak claim with a described test"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "fail",
+          "evidence": "claim comment is generic (\"Hello sir!... I love Vue... Kindly assign it to me... keep this issue reserved for me\") with no distinguishing bug detail and an assignment/priority demand"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "pass",
+          "evidence": "report supplies version, minimal reproduction (playground), steps, expected and actual per the bug template; repo facts state no AI-use policy, so no disclosure is required"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    },
+    {
+      "id": "pkg-20",
+      "verdict": "reject",
+      "failed_checks": [
+        "repository-conventions"
+      ],
+      "checks": [
+        {
+          "name": "environment-recorded",
+          "grade": "pass",
+          "evidence": "\"ghostty 1.3.1 (release build, Fedora 42 RPM), GTK backend, GNOME 48 (Wayland), dark system scheme\""
+        },
+        {
+          "name": "steps-rerunnable",
+          "grade": "pass",
+          "evidence": "exact config content, launch command with flags, and query command given, plus a second control run"
+        },
+        {
+          "name": "observable-evidence",
+          "grade": "pass",
+          "evidence": "quoted captured output `^[[?997;2n` and `^[[?997;1n` for the two runs"
+        },
+        {
+          "name": "target-behavior",
+          "grade": "pass",
+          "evidence": "single-theme run returns 997;2 (light) vs conditional-pair run returns 997;1 (dark), matching the issue's exact failure pairing"
+        },
+        {
+          "name": "outcome-honest",
+          "grade": "pass",
+          "evidence": "expected/actual clearly stated and matched by artifacts; minor unsupported aside about \"not specific to debug builds\" not established by the bundle"
+        },
+        {
+          "name": "claim-specific-and-constructive",
+          "grade": "pass",
+          "evidence": "claim names the mode-2031/single-theme behavior and proposes testing the draft patch before opening a PR"
+        },
+        {
+          "name": "repository-conventions",
+          "grade": "fail",
+          "evidence": "repo facts require AI usage disclosed with tool and extent; neither the claim comment nor the repro report contains any such disclosure"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "calibration": false
+    }
+  ]
+}
